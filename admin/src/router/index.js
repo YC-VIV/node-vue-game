@@ -1,29 +1,57 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+const Main = () => import('../views/Main.vue')
+const CategoryCreate = () => import('../components/Categories/CategoryCreate.vue')
+const CategoryList = () => import('../components/Categories/CategoryList.vue')
+
+const ItemCreate = () => import('../components/Items/ItemCreate.vue')
+const ItemList = () => import('../components/Items/ItemList.vue')
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    name: 'main',
+    component: Main,
+    children: [
+      // 分类
+      { 
+        path: '/categories/create', 
+        component: CategoryCreate 
+      },
+      { 
+        path: '/categories/list', 
+        component: CategoryList 
+      },
+      {
+        path: '/categories/edit/:id',
+        component: CategoryCreate,
+        props: true
+      },
+      // 物品
+      { 
+        path: '/items/create', 
+        component: ItemCreate 
+      },
+      { 
+        path: '/items/list', 
+        component: ItemList 
+      },
+      {
+        path: '/items/edit/:id',
+        component: ItemCreate,
+        props: true
+      }
+    ]
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes 
 })
 
 export default router
