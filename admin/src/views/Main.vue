@@ -15,6 +15,21 @@
                             <el-menu-item index="/items/create">新建物品</el-menu-item>
                             <el-menu-item index="/items/list">物品列表</el-menu-item>
                         </el-menu-item-group>
+                        <el-menu-item-group>
+                            <template slot="title">英雄</template>
+                            <el-menu-item index="/heroes/create">新建英雄</el-menu-item>
+                            <el-menu-item index="/heroes/list">英雄列表</el-menu-item>
+                        </el-menu-item-group>
+                        <el-menu-item-group>
+                            <template slot="title">文章</template>
+                            <el-menu-item index="/articles/create">新建文章</el-menu-item>
+                            <el-menu-item index="/articles/list">文章列表</el-menu-item>
+                        </el-menu-item-group>
+                        <el-menu-item-group>
+                            <template slot="title">轮播图</template>
+                            <el-menu-item index="/carousels/create">新建轮播图</el-menu-item>
+                            <el-menu-item index="/carousels/list">轮播列表</el-menu-item>
+                        </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
             </el-aside>
