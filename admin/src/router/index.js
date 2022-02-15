@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// 富文本编辑器组件
-import { VueEditor } from "vue2-editor";
 
 const Main = () => import('../views/Main.vue')
+const Login = () => import('../views/Login.vue')
+
 const CategoryCreate = () => import('../components/Categories/CategoryCreate.vue')
 const CategoryList = () => import('../components/Categories/CategoryList.vue')
 
@@ -18,6 +18,9 @@ const ArticleList = () => import('../components/Articles/ArticleList.vue')
 
 const CarouselCreate = () => import('../components/Carousels/CarouselCreate.vue')
 const CarouselList = () => import('../components/Carousels/CarouselList.vue')
+
+const UserCreate = () => import('../components/Users/UserCreate.vue')
+const UserList = () => import('../components/Users/UserList.vue')
 
 Vue.use(VueRouter)
 
@@ -96,8 +99,26 @@ const routes = [
         path: '/carousels/edit/:id',
         component: CarouselCreate,
         props: true
-      }
+      },
+      // 用户
+      {
+        path: '/users/create',
+        component: UserCreate,
+      },
+      {
+        path: '/users/list',
+        component: UserList,
+      },
+      {
+        path: '/users/edit/:id',
+        component: UserCreate,
+        props: true
+      },
     ]
+  },{
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ]
 
@@ -105,6 +126,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes 
+})
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') { return next() }
+  const token = window.localStorage.getItem('token')
+  if (!token) { return next('/login') }
+  next()
 })
 
 export default router

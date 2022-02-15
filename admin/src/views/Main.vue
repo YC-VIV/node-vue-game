@@ -2,14 +2,9 @@
     <div class="container">
         <el-container style="height: 100vh;">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-                <el-menu router :default-openeds="['1']">
+                <el-menu router unique-opened :default-active="$router.path">
                     <el-submenu index="1">
                         <template slot="title"><i class="el-icon-message"></i>内容管理</template>
-                        <el-menu-item-group>
-                            <template slot="title">分类</template>
-                            <el-menu-item index="/categories/create">新建分类</el-menu-item>
-                            <el-menu-item index="/categories/list">分类列表</el-menu-item>
-                        </el-menu-item-group>
                         <el-menu-item-group>
                             <template slot="title">物品</template>
                             <el-menu-item index="/items/create">新建物品</el-menu-item>
@@ -20,6 +15,9 @@
                             <el-menu-item index="/heroes/create">新建英雄</el-menu-item>
                             <el-menu-item index="/heroes/list">英雄列表</el-menu-item>
                         </el-menu-item-group>
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-suitcase"></i>运营管理</template>
                         <el-menu-item-group>
                             <template slot="title">文章</template>
                             <el-menu-item index="/articles/create">新建文章</el-menu-item>
@@ -29,6 +27,22 @@
                             <template slot="title">轮播图</template>
                             <el-menu-item index="/carousels/create">新建轮播图</el-menu-item>
                             <el-menu-item index="/carousels/list">轮播列表</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title"><i class="el-icon-setting"></i>分类管理</template>
+                        <el-menu-item-group>
+                            <template slot="title">分类</template>
+                            <el-menu-item index="/categories/create">新建分类</el-menu-item>
+                            <el-menu-item index="/categories/list">分类列表</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-submenu index="4">
+                        <template slot="title"><i class="el-icon-user"></i>账号管理</template>
+                        <el-menu-item-group>
+                            <template slot="title">账号</template>
+                            <el-menu-item index="/users/create">新建账号</el-menu-item>
+                            <el-menu-item index="/users/list">账号列表</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>

@@ -3,6 +3,9 @@ const express = require('express')
 
 const app = express()
 
+// 设置token的密钥
+app.set('secret','jid81jkd0da1411hf83fafa')
+
 // 解决跨域
 app.use(require('cors')())
 // 解析表单中的JSON格式的数据

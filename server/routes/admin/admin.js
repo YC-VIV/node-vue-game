@@ -4,6 +4,13 @@
 module.exports = app => {
     // 导入express调用router并实例化
     const express = require('express')
+    // 引入jwt用于生成token
+    const jwt = require('jsonwebtoken')
+    // 验证已经使用bcrypt加密的密码
+    const bcrypt = require('bcrypt')
+    // 用于http报错处理，错误时抛出状态码和信息
+    const assert = require('http-assert')
+
     const router = express.Router(
         {
             // 由于子路由使用了路由的动态参数resource，所以这里需要设置合并路由
@@ -23,7 +30,23 @@ module.exports = app => {
             res.send(info)
         })
         // 查询
-        router.get('/', async( req,res ) => {
+        router.get('/', async( req,res,next ) => {
+            // token验证
+            const token = await String( req.headers.authorization || '' ).split(' ').pop()
+
+            assert(token,401,"请先登录哦！")
+
+            const { id } = jwt.verify(token,app.get('secret'))
+            console.log(id);
+
+            assert(id,401,"用户不存在，请重新登录！")
+
+            req.user = await require('../../models/User').findById(id)
+
+            assert(req.user,401,'用户不存在，请重新登录！')
+
+            next()
+        } , async( req,res ) => {
             // 若模型是Category，则可能进行二级分类编辑的操作，此时需要查询具体的parent
             const queryOptions = {}
             if( req.Model.modelName === 'Category' ) {
@@ -83,4 +106,27 @@ module.exports = app => {
         file.url = `http://${require('../../index').IP}:${require('../../index').PORT}/uploads/${file.filename}`
         res.send(file)
     })
+
+    // 登录
+    app.post('/admin/api/login',async( req , res ) => {
+        const { name , password } = req.body
+        // 根据用户名查询是否存在用户
+        const User = require('../../models/User')
+        const info = await User.findOne({name},{name:1,password:1})
+        
+        assert(info,422,"找不到用户！")
+
+        const right = bcrypt.compareSync(password,info.password)
+
+        assert(right,422,"密码错误！")
+
+        // 生成token并返回
+        const token = jwt.sign({id:info._id},app.get('secret'))
+        res.send({token,message:'登录成功！'})
+    })
+
+    // 错误处理中间件
+    app.use( ( err,req,res,next ) => {
+        res.status(err.status || 500).send({message:err.message})
+    } )
 }
